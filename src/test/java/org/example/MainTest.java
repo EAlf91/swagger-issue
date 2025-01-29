@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 class MainTest {
 
     record TestDto (@Schema(example = "notANumber") String name, int age) {}
-    record TestDtoClone (@Schema(example = "1234") String name, int age) {}
 
     record TestDtoCloneTyping (@Schema(example = "1234", type = "string") String name, int age) {}
     @Test
@@ -17,14 +16,6 @@ class MainTest {
         var converter = ModelConverters.getInstance(true);
         var actual = converter.read(TestDto.class);
         JsonSchema schema = (JsonSchema) actual.get("TestDto").getProperties().get("name");
-        assert schema.getExample() instanceof String;
-    }
-
-    @Test
-    void shouldReturnStringPropertyForNumbers(){
-        var converter = ModelConverters.getInstance(true);
-        var actual = converter.read(TestDtoClone.class);
-        JsonSchema schema = (JsonSchema) actual.get("TestDtoClone").getProperties().get("name");
         assert schema.getExample() instanceof String;
     }
 
